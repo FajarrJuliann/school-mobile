@@ -5,15 +5,42 @@ import 'package:get/get.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:school_mobile/app/data/utils/color.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../routes/app_pages.dart';
 
-class HomeView extends StatelessWidget {
-  void completeOnboarding() {
-    Get.offNamed(Routes.LOGIN); // Navigate to login page after onboarding
+class HomeView extends StatefulWidget {
+  @override
+  _HomeViewState createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  Future<bool> checkFirstTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool firstTime = prefs.getBool('firstTime') ?? true;
+    if (firstTime) {
+      await prefs.setBool('firstTime', false);
+    }
+    return firstTime;
   }
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: checkFirstTime(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.data == false) {
+          Future.microtask(() => Get.offNamed(Routes.LOGIN));
+          return SizedBox();
+        }
+        return buildOnboarding();
+      },
+    );
+  }
+
+  Widget buildOnboarding() {
     return Scaffold(
       body: IntroductionScreen(
         globalBackgroundColor: mainColor,
@@ -57,7 +84,7 @@ class HomeView extends StatelessWidget {
             decoration: pageDecoration(),
           ),
         ],
-        onDone: completeOnboarding,
+        onDone: () => Get.offNamed(Routes.LOGIN),
         showSkipButton: true,
         skip: Text(
           "Skip",
@@ -98,7 +125,7 @@ class HomeView extends StatelessWidget {
       bodyTextStyle: TextStyle(fontSize: 16.0, color: Colors.white),
       imagePadding: EdgeInsets.all(20),
       pageColor: mainColor,
-      imageFlex: 4, // Adjust image proportion
+      imageFlex: 3, // Adjust image proportion
       bodyFlex: 3, // Adjust text proportion
     );
   }

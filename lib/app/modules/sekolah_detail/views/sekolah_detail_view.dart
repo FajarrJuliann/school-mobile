@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:school_mobile/app/data/provider/user_provider.dart';
 import '../controllers/sekolah_detail_controller.dart';
 import 'package:marquee/marquee.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,21 +27,116 @@ class SekolahDetailView extends GetView<SekolahDetailController> {
       length: 2, // Jumlah tab
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            'Sekolah',
-            style: TextStyle(fontSize: 20),
-          ),
-          centerTitle: true,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () => Get.back(),
-          ),
           actions: [
-            IconButton(
-              icon: Icon(Icons.notifications),
-              onPressed: () {
-                Get.snackbar("Notifikasi", "Belum ada notifikasi baru");
-              },
+            /// **Container untuk membungkus dua ikon dengan pembatas**
+            Container(
+              decoration: BoxDecoration(
+                border:
+                    Border.all(color: Colors.black26), // Outline hitam pudar
+                borderRadius: BorderRadius.circular(15),
+              ),
+              padding: EdgeInsets.symmetric(
+                  horizontal: 2, vertical: 2), // Mengurangi padding
+              margin: EdgeInsets.all(8),
+              child: Row(
+                mainAxisSize: MainAxisSize.min, // Supaya ukuran sekecil mungkin
+                children: [
+                  /// **Ikon Titik Tiga Horizontal (More Options)**
+                  GestureDetector(
+                    onTap: () {
+                      Get.bottomSheet(
+                        Container(
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(16)),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ListTile(
+                                leading: Icon(Icons.settings),
+                                title: Text("Pengaturan"),
+                                onTap: () {
+                                  Get.back(); // Tutup Bottom Sheet
+                                  Get.snackbar("Pengaturan",
+                                      "Menu pengaturan belum tersedia");
+                                },
+                              ),
+                              ListTile(
+                                leading: Icon(Icons.help_outline),
+                                title: Text("Bantuan"),
+                                onTap: () {
+                                  Get.back();
+                                  Get.snackbar(
+                                      "Bantuan", "Menu bantuan belum tersedia");
+                                },
+                              ),
+                              ListTile(
+                                leading: Icon(Icons.logout),
+                                title: Text("Keluar"),
+                                onTap: () async {
+                                  Get.back(); // Tutup Bottom Sheet
+
+                                  // **Tampilkan Dialog Konfirmasi**
+                                  Get.defaultDialog(
+                                    title: "Konfirmasi Logout",
+                                    middleText:
+                                        "Apakah Anda yakin ingin keluar?",
+                                    textConfirm: "Ya",
+                                    textCancel: "Batal",
+                                    confirmTextColor: Colors.white,
+                                    onConfirm: () async {
+                                      final userProvider = UserProvider();
+                                      await userProvider
+                                          .logout(); // Hapus token
+
+                                      Get.offAllNamed(
+                                          '/login'); // Redirect ke login
+                                    },
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        backgroundColor:
+                            Colors.transparent, // Agar tampilan lebih menarik
+                        isScrollControlled:
+                            true, // Bisa diperbesar jika kontennya banyak
+                      );
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 4), // Mengurangi jarak antar ikon
+                      child: Icon(Icons.more_horiz,
+                          size: 22), // Mengecilkan ukuran ikon
+                    ),
+                  ),
+                  SizedBox(width: 5),
+
+                  /// **Pembatas Vertical**
+                  Container(
+                    height: 20, // Mengecilkan tinggi pembatas
+                    width: 1,
+                    color: Colors.black26, // Warna hitam pudar
+                  ),
+
+                  /// **Ikon Close Outlined**
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 10), // Mengurangi jarak antar ikon
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.back(); // Untuk kembali ke halaman sebelumnya
+                      },
+                      child: Icon(Icons.close,
+                          size: 22), // Mengecilkan ukuran ikon
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

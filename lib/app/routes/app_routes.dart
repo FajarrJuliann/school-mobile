@@ -11,6 +11,9 @@ abstract class Routes {
   static const FAVORITE = _Paths.FAVORITE;
   static const MAIN_PAGE = _Paths.MAIN_PAGE;
   static const SEKOLAH_DETAIL = _Paths.SEKOLAH_DETAIL;
+  static const LOGIN = _Paths.LOGIN;
+  static const REGISTER = _Paths.REGISTER;
+  static const WELCOME = _Paths.WELCOME;
 }
 
 abstract class _Paths {
@@ -23,4 +26,7 @@ abstract class _Paths {
   static const FAVORITE = '/favorite';
   static const MAIN_PAGE = '/main-page';
   static const SEKOLAH_DETAIL = '/sekolah-detail';
+  static const LOGIN = '/login';
+  static const REGISTER = '/register';
+  static const WELCOME = '/welcome';
 }

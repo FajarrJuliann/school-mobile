@@ -19,7 +19,7 @@ class WelcomeController extends GetxController {
   }
 
   void navigateToDashboard() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 5));
     Get.offNamed(Routes.MAIN_PAGE); // Pindah ke Dashboard setelah 3 detik
   }
 }

@@ -49,18 +49,35 @@ class WelcomeView extends GetView<WelcomeController> {
             ),
             const SizedBox(height: 10),
             FadeInUp(
-              child: Obx(() => Text(
-                    controller.username.value.toUpperCase(),
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                    ),
-                  )),
+              child: Obx(() {
+                String roleName = getRoleName(controller.role.value);
+                return Text(
+                  "${controller.username.value.toUpperCase()} | $roleName", // Menampilkan Username + Role
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                );
+              }),
             ),
           ],
         ),
       ),
     );
+  }
+
+  // Fungsi untuk mengubah role ID menjadi nama peran
+  String getRoleName(int role) {
+    switch (role) {
+      case 0:
+        return "Super Admin";
+      case 1:
+        return "Admin";
+      case 2:
+        return "Guest";
+      default:
+        return "User";
+    }
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -22,7 +24,7 @@ class ProfileView extends GetView<ProfileController> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(30),
                   bottomRight: Radius.circular(30),
                 ),
@@ -34,7 +36,10 @@ class ProfileView extends GetView<ProfileController> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // print(controller.user.value);
+                          Get.snackbar("Edit Profile", "Fitur belum tersedia");
+                        },
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.white.withOpacity(0.3),
                           shape: RoundedRectangleBorder(
@@ -74,21 +79,42 @@ class ProfileView extends GetView<ProfileController> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const Text(
-                    'Aditi Gupta',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const Text(
-                    'ID: 12364555',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white70,
-                    ),
-                  ),
+
+                  /// **PERBAIKAN DI BAGIAN INI**
+                  Obx(() {
+                    final user = controller.user.value;
+
+                    if (user == null) {
+                      return const Text(
+                        "User data not available",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      );
+                    }
+
+                    String roleName = getRoleName(user.role);
+                    return Column(
+                      children: [
+                        Text(
+                          user.username.toUpperCase(),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          roleName,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
                   const SizedBox(height: 20),
                 ],
               ),
@@ -111,7 +137,7 @@ class ProfileView extends GetView<ProfileController> {
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [mainColor, Colors.blue.shade900],
+            colors: [mainColor, Colors.black],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -126,7 +152,7 @@ class ProfileView extends GetView<ProfileController> {
           ),
           trailing: isLogout
               ? null
-              : Icon(
+              : const Icon(
                   Icons.arrow_forward_ios,
                   size: 16,
                   color: Colors.white,
@@ -135,5 +161,18 @@ class ProfileView extends GetView<ProfileController> {
         ),
       ),
     );
+  }
+
+  String getRoleName(int role) {
+    switch (role) {
+      case 0:
+        return "Super Admin";
+      case 1:
+        return "Admin";
+      case 2:
+        return "Guest";
+      default:
+        return "User";
+    }
   }
 }

@@ -18,14 +18,21 @@ class DashboardView extends GetView<DashboardController> {
     ];
 
     final List<Map<String, dynamic>> categories = [
-      {'name': 'Prasekolah', 'icon': Icons.child_care},
-      {'name': 'SD | MI', 'icon': Icons.school},
-      {'name': 'SMP | MTS', 'icon': Icons.business},
-      {'name': 'SMA | MA', 'icon': Icons.account_balance},
-      {'name': 'SMK | MAK', 'icon': Icons.build},
-      {'name': 'KAMPUS', 'icon': Icons.location_city},
+      {
+        'name': 'Prasekolah',
+        'icon': Icons.child_care,
+        'bentuk': ''
+      }, // Tidak ada filter bentuk
+      {'name': 'SD | MI', 'icon': Icons.school, 'bentuk': 'SD'},
+      {'name': 'SMP | MTS', 'icon': Icons.business, 'bentuk': 'SMP'},
+      {'name': 'SMA | MA', 'icon': Icons.account_balance, 'bentuk': 'SMA'},
+      {'name': 'SMK | MAK', 'icon': Icons.build, 'bentuk': 'SMK'},
+      {
+        'name': 'KAMPUS',
+        'icon': Icons.location_city,
+        'bentuk': ''
+      }, // Tidak ada filter bentuk
     ];
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -213,9 +220,13 @@ class DashboardView extends GetView<DashboardController> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Get.snackbar("Kategori", "Fitur Belum Tersedia");
-                            // Bisa diarahkan ke halaman lain dengan Get.toNamed()
-                            // Get.toNamed(Routes.KATEGORI, arguments: category['name']);
+                            if (category['bentuk'].isNotEmpty) {
+                              Get.toNamed(Routes.LIST_SEKOLAH_BY_BENTUK,
+                                  arguments: category['bentuk']);
+                            } else {
+                              Get.snackbar("Kategori",
+                                  "Fitur untuk ${category['name']} belum tersedia");
+                            }
                           },
                           child: Card(
                             shape: CircleBorder(),
@@ -238,7 +249,6 @@ class DashboardView extends GetView<DashboardController> {
                 }).toList(),
               ),
             ),
-
             SizedBox(height: 5),
 
             /// **Rekomendasi Sekolah (Horizontal Scroll)**

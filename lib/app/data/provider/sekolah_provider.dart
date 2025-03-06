@@ -62,4 +62,34 @@ class SekolahProvider extends GetConnect {
       throw Exception("Gagal mengambil detail sekolah: ${response.statusCode}");
     }
   }
+
+  Future<List<Sekolah>> fetchSekolahByBentuk(String bentuk,
+      {String search = ''}) async {
+    final token = await _getToken();
+    if (token == null || token.isEmpty) {
+      throw Exception("Token tidak ditemukan, harap login ulang.");
+    }
+
+    final response = await get(
+      '$baseUrl1/sekolah/bentuk/$bentuk?search=$search',
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json',
+      },
+    );
+
+    if (response.statusCode == HttpStatus.ok) {
+      if (response.body != null && response.body['data'] != null) {
+        return (response.body['data'] as List)
+            .map((e) => Sekolah.fromJson(e))
+            .toList();
+      } else {
+        return [];
+      }
+    } else if (response.statusCode == 400) {
+      throw Exception(response.body['message']);
+    } else {
+      throw Exception("Gagal mengambil data sekolah: ${response.statusCode}");
+    }
+  }
 }

@@ -24,4 +24,16 @@ class DashboardController extends GetxController {
       isLoading(false);
     }
   }
+
+  void fetchSekolahByBentuk(String bentuk) async {
+    try {
+      isLoading(true);
+      var data = await provider.fetchSekolahByBentuk(bentuk);
+      sekolahList.assignAll(data); // Perbarui list dengan data dari API
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+    } finally {
+      isLoading(false);
+    }
+  }
 }

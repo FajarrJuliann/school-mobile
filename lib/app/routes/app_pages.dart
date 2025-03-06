@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/LIST_SEKOLAH_BY_BENTUK/bindings/list_sekolah_by_bentuk_binding.dart';
+import '../modules/LIST_SEKOLAH_BY_BENTUK/views/list_sekolah_by_bentuk_view.dart';
 import '../modules/dashboard/bindings/dashboard_binding.dart';
 import '../modules/dashboard/views/dashboard_view.dart';
 import '../modules/favorite/bindings/favorite_binding.dart';
@@ -85,6 +87,11 @@ class AppPages {
       name: _Paths.WELCOME,
       page: () => WelcomeView(),
       binding: WelcomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.LIST_SEKOLAH_BY_BENTUK,
+      page: () => const ListSekolahByBentukView(),
+      binding: ListSekolahByBentukBinding(),
     ),
   ];
 }

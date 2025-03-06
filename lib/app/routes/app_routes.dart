@@ -14,6 +14,7 @@ abstract class Routes {
   static const LOGIN = _Paths.LOGIN;
   static const REGISTER = _Paths.REGISTER;
   static const WELCOME = _Paths.WELCOME;
+  static const LIST_SEKOLAH_BY_BENTUK = _Paths.LIST_SEKOLAH_BY_BENTUK;
 }
 
 abstract class _Paths {
@@ -29,4 +30,5 @@ abstract class _Paths {
   static const LOGIN = '/login';
   static const REGISTER = '/register';
   static const WELCOME = '/welcome';
+  static const LIST_SEKOLAH_BY_BENTUK = '/list-sekolah-by-bentuk';
 }

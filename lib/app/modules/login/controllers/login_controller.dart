@@ -16,9 +16,9 @@ class LoginController extends GetxController {
       user.value = loggedInUser; // Simpan user di state
 
       if (loggedInUser != null) {
-        // print("🎉 User Login: ${loggedInUser.username}");
-        // print("📧 Email: ${loggedInUser.email}");
-        // print("🔑 Role: ${loggedInUser.role}");
+        print("🎉 User Login: ${loggedInUser.username}");
+        print("📧 Email: ${loggedInUser.email}");
+        print("🔑 Role: ${loggedInUser.role}");
 
         // Simpan user di GetX state
         user.value = loggedInUser;
